@@ -50,20 +50,43 @@ public class Main {
                     System.out.println("WRITE A PASSWORD :");
                     String password = new Scanner(System.in).nextLine().toUpperCase();
                     if (admin.getPassword().toUpperCase().equals(password)) {
-
-
-                            myMethids();
-
-
+                        myMethids();
                     } else {
                         throw new MyException("UNCORRECT PASSWORD");
                     }
+
                 } catch (MyException e) {
-                    System.out.println(e.getMessage());
-                    String password = new Scanner(System.in).nextLine();
+
                 }
             } else if (c == 2) {
+                System.out.println("WRITE A NEW PASSWORD :");
+                String password = new Scanner(System.in).nextLine();
+                admin.setPassword(password);
+                int k = new Scanner(System.in).nextInt();
+                while (true) {
+                    if (k == 1) {
 
+                        try {
+                            System.out.println("WRITE A GMAIL :");
+                            String gmaill = new Scanner(System.in).nextLine().toUpperCase();
+                            if (admin.getAdminGmail().toUpperCase().equals(gmaill)) {
+                            } else if (!gmaill.contains("@")) {
+                                throw new MyException("WRITE A GMAILL WITH @");
+                            } else {
+                                throw new MyException("UNCORRECT GMAIL!");
+                            }
+                            System.out.println("WRITE A PASSWORD :");
+                            String password1 = new Scanner(System.in).nextLine().toUpperCase();
+                            if (admin.getPassword().toUpperCase().equals(password1)) {
+                                myMethids();
+                            } else {
+                                throw new MyException("UNCORRECT PASSWORD");
+                            }
+                        } catch (MyException e) {
+                            System.out.println(e.getMessage());
+                        }
+                    }
+                }
             }
         }
     }

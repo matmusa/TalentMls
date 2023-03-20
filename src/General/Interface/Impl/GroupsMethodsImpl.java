@@ -35,7 +35,6 @@ public class GroupsMethodsImpl implements GroupsMethods {
                 if (g.getGroupName().equalsIgnoreCase(name)) {
                     throw new MyException("SAME GROUP NAME!");
                 }
-
             }
             System.out.println("WRITE A DDESCRIPTION GROUP :");
             String description = new Scanner(System.in).nextLine().toUpperCase();
@@ -124,7 +123,7 @@ public class GroupsMethodsImpl implements GroupsMethods {
     @Override
     public void addNewStudentToGroup() {
         ArrayList<Group> groups1 = new ArrayList<>();
-
+        ArrayList<Person> personArrayList = new ArrayList<>();
         Person person = new Person();
         System.out.println("WRITE A NAME OF  GROUP  :");
         String name = new Scanner(System.in).nextLine().toUpperCase();
@@ -148,57 +147,63 @@ public class GroupsMethodsImpl implements GroupsMethods {
                     System.out.println("WRITE A   GMAILL  :");
                     String nameOFStudent2 = new Scanner(System.in).nextLine().toUpperCase();
                     boolean isTrue = true;
-                    for (Group t : groups) {
-                        if (t.getPeople().isEmpty()) {
-                            for (Person person1 : t.getPeople()) {
-                                if (person1.getGmaill().equals(nameOFStudent2)) {
-                                    isTrue = true;
-                                    throw new MyException("SAME GMAIL");
-                                } else {
-                                    isTrue = false;
+                    for (Group p : groups
+                    ) {
+                        for (Person k : p.getPeople()
+                        ) {
+                            if (k.getGmaill().toUpperCase().equals(nameOFStudent)) {
+                                isTrue = true;
 
-                                    if (nameOFStudent2.contains("@")) {
-                                        person.setGmaill(nameOFStudent2.toUpperCase());
-                                    } else {
-                                        throw new MyException("WRITE WITH  @");
-                                    }
-
-                                    person.setId(g.getPeople().size() + 1);
-                                    System.out.println("WRITE A GENDER(MALE/FEMALE :");
-                                    String gender = new Scanner(System.in).nextLine().toUpperCase();
-                                    if (gender.equals(Gender.MALE.name().toUpperCase())) {
-                                        person.setGender(Gender.MALE);
-                                    } else if (gender.equals(Gender.FEMALE.name().toUpperCase())) {
-                                        person.setGender(Gender.FEMALE);
-
-                                    } else {
-                                        System.out.println("UNCORRECT GENDER!");
-                                        break;
-                                    }
-                                    System.out.println("WRITE A  PASSWORD  :");
-                                    String passsword = new Scanner(System.in).nextLine().toUpperCase();
-                                    if (passsword.length() <= 7) {
-                                        throw new MyException("LENGTH MUST BE AT LEAST 7 WORDS");
-                                    } else {
-                                        person.setPassword(passsword);
-                                        g.getPeople().add(person);
-                                        System.out.println(g);
-                                    }
-
-                                }
+                            } else {
+                                isTrue = false;
                             }
                         }
-
                     }
-                    }
-                } else{
-                throw new MyException("NO SUCH GROUP!");
+                    if (!isTrue){
+                        throw new MyException("SAME GMAIL");
                 }
-            } catch(
-                MyException e){
-            System.out.println(e.getMessage());
+                if (nameOFStudent2.contains("@")) {
+                    person.setGmaill(nameOFStudent2.toUpperCase());
+                } else {
+                    throw new MyException("WRITE WITH  @");
+                }
+
+                person.setId(g.getPeople().size() + 1);
+                System.out.println("WRITE A GENDER(MALE/FEMALE :");
+                String gender = new Scanner(System.in).nextLine().toUpperCase();
+                if (gender.equals(Gender.MALE.name().toUpperCase())) {
+                    person.setGender(Gender.MALE);
+                } else if (gender.equals(Gender.FEMALE.name().toUpperCase())) {
+                    person.setGender(Gender.FEMALE);
+
+                } else {
+                    System.out.println("UNCORRECT GENDER!");
+                    break;
+                }
+                System.out.println("WRITE A  PASSWORD  :");
+                String passsword = new Scanner(System.in).nextLine().toUpperCase();
+                if (passsword.length() <= 7) {
+                    throw new MyException("LENGTH MUST BE AT LEAST 7 WORDS");
+                } else {
+                    person.setPassword(passsword);
+                    g.getPeople().add(person);
+                    System.out.println(g);
+                }
+
+            }
+        } else{
+            throw new MyException("NO SUCH GROUP!");
         }
+
+
+    } catch(
+    MyException e)
+
+    {
+        System.out.println(e.getMessage());
     }
+
+}
 
 
     @Override
