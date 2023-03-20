@@ -77,7 +77,6 @@ public class GroupsMethodsImpl implements GroupsMethods {
             System.out.println(e.getMessage());
         }
 
-
     }
 
     @Override
@@ -148,55 +147,55 @@ public class GroupsMethodsImpl implements GroupsMethods {
                     person.setLastName(nameOFStudent1.toUpperCase());
                     System.out.println("WRITE A   GMAILL  :");
                     String nameOFStudent2 = new Scanner(System.in).nextLine().toUpperCase();
-                    if (nameOFStudent2.contains("@")) {
-                        person.setGmaill(nameOFStudent2.toUpperCase());
-                    } else {
-                        throw new MyException("WRITE WITH  @");
-                    }
-
+                    boolean isTrue = true;
                     for (Group t : groups) {
                         if (t.getPeople().isEmpty()) {
                             for (Person person1 : t.getPeople()) {
                                 if (person1.getGmaill().equals(nameOFStudent2)) {
+                                    isTrue = true;
                                     throw new MyException("SAME GMAIL");
                                 } else {
+                                    isTrue = false;
+
+                                    if (nameOFStudent2.contains("@")) {
+                                        person.setGmaill(nameOFStudent2.toUpperCase());
+                                    } else {
+                                        throw new MyException("WRITE WITH  @");
+                                    }
+
+                                    person.setId(g.getPeople().size() + 1);
+                                    System.out.println("WRITE A GENDER(MALE/FEMALE :");
+                                    String gender = new Scanner(System.in).nextLine().toUpperCase();
+                                    if (gender.equals(Gender.MALE.name().toUpperCase())) {
+                                        person.setGender(Gender.MALE);
+                                    } else if (gender.equals(Gender.FEMALE.name().toUpperCase())) {
+                                        person.setGender(Gender.FEMALE);
+
+                                    } else {
+                                        System.out.println("UNCORRECT GENDER!");
+                                        break;
+                                    }
+                                    System.out.println("WRITE A  PASSWORD  :");
+                                    String passsword = new Scanner(System.in).nextLine().toUpperCase();
+                                    if (passsword.length() <= 7) {
+                                        throw new MyException("LENGTH MUST BE AT LEAST 7 WORDS");
+                                    } else {
+                                        person.setPassword(passsword);
+                                        g.getPeople().add(person);
+                                        System.out.println(g);
+                                    }
+
                                 }
                             }
                         }
-                        person.setId(g.getPeople().size() + 1);
-                        System.out.println("WRITE A GENDER(MALE/FEMALE :");
-                        String gender = new Scanner(System.in).nextLine().toUpperCase();
-                        if (gender.equals(Gender.MALE.name().toUpperCase())) {
-                            person.setGender(Gender.MALE);
-                        } else if (gender.equals(Gender.FEMALE.name().toUpperCase())) {
-                            person.setGender(Gender.FEMALE);
-
-                        } else {
-                            System.out.println("UNCORRECT GENDER!");
-                            break;
-                        }
-                        System.out.println("WRITE A  PASSWORD  :");
-                        String passsword = new Scanner(System.in).nextLine().toUpperCase();
-                        if (passsword.length() <= 7) {
-                            throw new MyException("LENGTH MUST BE AT LEAST 7 WORDS");
-                        } else {
-                            person.setPassword(passsword);
-                            g.getPeople().add(person);
-                            System.out.println(g);
-                        }
-
 
                     }
-
-
-                }
-
-
-            } else {
+                    }
+                } else{
                 throw new MyException("NO SUCH GROUP!");
-            }
-        } catch (
-                MyException e) {
+                }
+            } catch(
+                MyException e){
             System.out.println(e.getMessage());
         }
     }
@@ -220,31 +219,32 @@ public class GroupsMethodsImpl implements GroupsMethods {
                         break;
                     }
                 }
-                if (!personArrayList.isEmpty()) {
-                    for (Person p : personArrayList
+            }
+            if (!personArrayList.isEmpty()) {
+                for (Person p : personArrayList
 
-                    ) {
-                        System.out.println("WRITE A  PASSWORD OF  STUDENT  :");
-                        String nameOFStuden = new Scanner(System.in).nextLine().toUpperCase();
-                        if (p.getPassword().toUpperCase().equals(nameOFStuden)) {
-                        } else {
-                            throw new MyException("UNCORRECT PASSWORD!");
-                        }
-                        System.out.println("WRITE A NEW FIRST NAME OF STUDENT  :");
-                        String nameOFStud = new Scanner(System.in).nextLine().toUpperCase();
-                        p.setFirstName(nameOFStud.toUpperCase());
-                        System.out.println("WRITE A NEW LAST NAME OF STUDENT  :");
-                        String nameOFStud2 = new Scanner(System.in).nextLine().toUpperCase();
-                        p.setLastName(nameOFStud2.toUpperCase());
-                        System.out.println(p.getFirstName() + " SUCCESSFULLY CHANGED!");
-                        break;
+                ) {
+                    System.out.println("WRITE A  PASSWORD OF  STUDENT  :");
+                    String nameOFStuden = new Scanner(System.in).nextLine().toUpperCase();
+                    if (p.getPassword().toUpperCase().equals(nameOFStuden)) {
+                    } else {
+                        throw new MyException("UNCORRECT PASSWORD!");
                     }
-
-                } else {
-                    throw new MyException("WRITE WITH A @");
+                    System.out.println("WRITE A NEW FIRST NAME OF STUDENT  :");
+                    String nameOFStud = new Scanner(System.in).nextLine().toUpperCase();
+                    p.setFirstName(nameOFStud.toUpperCase());
+                    System.out.println("WRITE A NEW LAST NAME OF STUDENT  :");
+                    String nameOFStud2 = new Scanner(System.in).nextLine().toUpperCase();
+                    p.setLastName(nameOFStud2.toUpperCase());
+                    System.out.println(p.getFirstName() + " SUCCESSFULLY CHANGED!");
+                    break;
                 }
 
+            } else {
+                throw new MyException("WRITE WITH A @");
             }
+
+
         } catch (MyException e) {
             System.out.println(e.getMessage());
         }
@@ -313,24 +313,28 @@ public class GroupsMethodsImpl implements GroupsMethods {
     @Override
     public void getAllStudentLesson() {
         ArrayList<Group> personArrayList = new ArrayList<>();
+        ArrayList<Lesson> lessons = new ArrayList<>();
         System.out.println("WRITE A GMAILL OF STUDENT  :");
         String nameOFStudent = new Scanner(System.in).nextLine().toUpperCase();
         for (Group g : groups
         ) {
-            if (g.toString().contains(nameOFStudent.toUpperCase())) {
-                personArrayList.add(g);
-                break;
+            for (Person p : g.getPeople()
+            ) {
+                if (p.getGmaill().contains(nameOFStudent.toUpperCase())) {
+                    lessons.addAll(g.getLessons());
+                    break;
+                }
             }
         }
         try {
-            if (!personArrayList.isEmpty()) {
-                for (Group p : personArrayList
+            if (!lessons.isEmpty()) {
+                for (Lesson p : lessons
                 ) {
                     System.out.println(p);
 
                 }
             } else {
-                throw new MyException("UNCORRECT GMAILL!");
+                throw new MyException("Lesson is empty!");
 
 
             }
@@ -338,6 +342,7 @@ public class GroupsMethodsImpl implements GroupsMethods {
             System.out.println(e.getMessage());
 
         }
+
 
     }
 
